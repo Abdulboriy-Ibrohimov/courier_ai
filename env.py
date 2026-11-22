@@ -8,9 +8,9 @@ DNAME = ["U", "D", "L", "R"]
 
 
 class CourierEnv:
-    """10x10 city grid. Courier goes S -> D. 3 traffic hazards move randomly each tick."""
+    """10x10 city grid. Courier goes S -> D. Traffic hazards (3 by default) move randomly each tick."""
 
-    def __init__(self, seed):
+    def __init__(self, seed, n_hazards=3):
         self.rng = random.Random(seed)
         while True:
             self.walls = {(r, c) for r in range(N) for c in range(N) if self.rng.random() < 0.15}
@@ -20,7 +20,7 @@ class CourierEnv:
                 break
         free = [(r, c) for r in range(N) for c in range(N)
                 if (r, c) not in self.walls and abs(r - c) > 3 and (r, c) not in (self.start, self.goal)]
-        self.haz = self.rng.sample(free, 3)
+        self.haz = self.rng.sample(free, n_hazards)
         self.pos = self.start
         self.t = 0
 
